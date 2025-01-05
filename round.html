@@ -1,0 +1,421 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round Robin CPU Scheduling Simulation</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url(https://images.unsplash.com/photo-1622679148419-fee710bab1a5?auto=format&fit=crop&q=80&w=1032&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #fff;
+        }
+
+        label {
+            font-weight: bold;
+            color: #ccc;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: aqua;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #0c1014;
+            color: aqua;
+        }
+
+        #results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin: 0;
+            color: aqua;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .animated {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+   
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Round Robin CPU Scheduling Simulation</h1>
+        <label for="numProcesses">Enter the number of processes:</label>
+        <input type="number" id="numProcesses">
+        <div id="burstTimesDiv">
+        </div>
+        <label for="timeQuantum">Enter the time quantum:</label>
+        <input type="number" id="timeQuantum">
+        <button id="submitProcesses" disabled>Submit</button>
+        <div id="results">
+            <h2 class="animated">Simulation Results</h2>
+            <p class="animated" id="avgWaitingTime">Average Waiting Time: </p>
+            <p class="animated" id="avgTurnaroundTime">Average Turnaround Time: </p>
+        </div>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        const submitProcesses = document.getElementById('submitProcesses');
+        const results = document.getElementById('results');
+        const avgWaitingTime = document.getElementById('avgWaitingTime');
+        const avgTurnaroundTime = document.getElementById('avgTurnaroundTime');
+        const burstTimesDiv = document.getElementById('burstTimesDiv');
+        const timeQuantumInput = document.getElementById('timeQuantum');
+
+        // Define a global variable to store the tasks queue.
+        let tasksQueue = [];
+
+        // Define a function to execute tasks using Round Robin.
+        function roundRobin(tasks, timeQuantum) {
+            // Copy the tasks to the tasksQueue.
+            tasksQueue = tasks.slice();
+            const waitingTimes = Array(tasks.length).fill(0);
+            const turnaroundTimes = Array(tasks.length).fill(0);
+
+            let currentTime = 0;
+
+            while (tasksQueue.length > 0) {
+                const currentTask = tasksQueue.shift();
+                const taskIndex = tasks.indexOf(currentTask);
+
+                if (currentTask <= timeQuantum) {
+                    // The task can complete within the time quantum.
+                    currentTime += currentTask;
+                    turnaroundTimes[taskIndex] = currentTime;
+                } else {
+                    // The task needs more time.
+                    currentTime += timeQuantum;
+                    tasksQueue.push(currentTask - timeQuantum);
+                }
+
+                // Update waiting times for other tasks in the queue.
+                for (let i = 0; i < tasksQueue.length; i++) {
+                    waitingTimes[tasks.indexOf(tasksQueue[i])] = currentTime;
+                }
+            }
+
+            // Calculate average waiting time and average turnaround time.
+            const numTasks = tasks.length;
+            const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+            const totalTurnaroundTime = turnaroundTimes.reduce((acc, time) => acc + time, 0);
+            const avgWaitingTime = totalWaitingTime / numTasks;
+            const avgTurnaroundTime = totalTurnaroundTime / numTasks;
+
+            return [avgWaitingTime, avgTurnaroundTime];
+        }
+
+        const addBurstTimeInputs = () => {
+            const numProcesses = parseInt(document.getElementById('numProcesses').value);
+            burstTimesDiv.innerHTML = ''; // Clear existing inputs
+
+            for (let i = 1; i <= numProcesses; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Burst Time for Process ${i}:`;
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = `burstTime${i}`;
+
+                burstTimesDiv.appendChild(label);
+                burstTimesDiv.appendChild(input);
+            }
+        };
+
+        document.getElementById('numProcesses').addEventListener('input', () => {
+            addBurstTimeInputs();
+        });
+
+        submitProcesses.addEventListener('click', () => {
+            const numProcesses = parseInt(document.getElementById('numProcesses').value);
+            const burstTimes = [];
+
+            for (let i = 1; i <= numProcesses; i++) {
+                burstTimes.push(parseInt(document.getElementById(`burstTime${i}`).value));
+            }
+            const timeQuantum = parseInt(timeQuantumInput.value);
+
+            // Call the Round Robin function and get the results.
+            const [avgWaitingTime, avgTurnaroundTime] = roundRobin(burstTimes, timeQuantum);
+
+            // Display the results
+            avgWaitingTime.textContent = `Average Waiting Time: ${avgWaitingTime.toFixed(2)}`;
+            avgTurnaroundTime.textContent = `Average Turnaround Time: ${avgTurnaroundTime.toFixed(2)}`;
+            results.style.display = 'block';
+            results.classList.add('animated');
+        });
+
+        document.getElementById('numProcesses').addEventListener('input', (event) => {
+            if (event.target.value > 0) {
+                submitProcesses.disabled = false;
+            } else {
+                submitProcesses.disabled = true;
+            }
+        });
+
+        function goBack() {
+            // Navigate back to the main selection page (os.html)
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round Robin CPU Scheduling Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url(https://images.unsplash.com/photo-1622679148419-fee710bab1a5?auto=format&fit=crop&q=80&w=1032&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #fff;
+        }
+
+        label {
+            font-weight: bold;
+            color: #ccc;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: aqua;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #0c1014;
+            color: aqua;
+        }
+
+        #results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin: 0;
+            color: aqua;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .animated {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Round Robin CPU Scheduling Simulation</h1>
+        <label for="numProcesses">Enter the number of processes:</label>
+        <input type="number" id="numProcesses">
+        <div id="burstTimesDiv"></div>
+        <label for="timeQuantum">Enter the time quantum:</label>
+        <input type="number" id="timeQuantum">
+        <button id="submitProcesses" disabled>Submit</button>
+        <div id="results">
+            <h2 class="animated">Simulation Results</h2>
+            <p class="animated" id="avgWaitingTime">Average Waiting Time: </p>
+            <p class="animated" id="avgTurnaroundTime">Average Turnaround Time: </p>
+        </div>
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        const submitProcesses = document.getElementById('submitProcesses');
+        const results = document.getElementById('results');
+        const avgWaitingTimeElem = document.getElementById('avgWaitingTime');
+        const avgTurnaroundTimeElem = document.getElementById('avgTurnaroundTime');
+        const burstTimesDiv = document.getElementById('burstTimesDiv');
+        const timeQuantumInput = document.getElementById('timeQuantum');
+
+        // Define a global variable to store the tasks queue.
+        let tasksQueue = [];
+
+        // Define a function to execute tasks using Round Robin.
+        function roundRobin(tasks, timeQuantum) {
+            // Copy the tasks to the tasksQueue.
+            tasksQueue = tasks.slice();
+            const waitingTimes = Array(tasks.length).fill(0);
+            const turnaroundTimes = Array(tasks.length).fill(0);
+
+            let currentTime = 0;
+
+            while (tasksQueue.length > 0) {
+                const currentTask = tasksQueue.shift();
+                const taskIndex = tasks.indexOf(currentTask);
+
+                if (currentTask <= timeQuantum) {
+                    // The task can complete within the time quantum.
+                    currentTime += currentTask;
+                    turnaroundTimes[taskIndex] = currentTime;
+                } else {
+                    // The task needs more time.
+                    currentTime += timeQuantum;
+                    tasksQueue.push(currentTask - timeQuantum);
+                }
+
+                // Update waiting times for other tasks in the queue.
+                for (let i = 0; i < tasksQueue.length; i++) {
+                    waitingTimes[tasks.indexOf(tasksQueue[i])] = currentTime;
+                }
+            }
+
+            // Calculate average waiting time and average turnaround time.
+            const numTasks = tasks.length;
+            const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+            const totalTurnaroundTime = turnaroundTimes.reduce((acc, time) => acc + time, 0);
+            const avgWaitingTime = totalWaitingTime / numTasks;
+            const avgTurnaroundTime = totalTurnaroundTime / numTasks;
+
+            return [avgWaitingTime, avgTurnaroundTime];
+        }
+
+        const addBurstTimeInputs = () => {
+            const numProcesses = parseInt(document.getElementById('numProcesses').value);
+            burstTimesDiv.innerHTML = ''; // Clear existing inputs
+
+            for (let i = 1; i <= numProcesses; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Burst Time for Process ${i}:`;
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = `burstTime${i}`;
+
+                burstTimesDiv.appendChild(label);
+                burstTimesDiv.appendChild(input);
+            }
+        };
+
+        document.getElementById('numProcesses').addEventListener('input', () => {
+            addBurstTimeInputs();
+        });
+
+        submitProcesses.addEventListener('click', () => {
+            const numProcesses = parseInt(document.getElementById('numProcesses').value);
+            const burstTimes = [];
+
+            for (let i = 1; i <= numProcesses; i++) {
+                burstTimes.push(parseInt(document.getElementById(`burstTime${i}`).value));
+            }
+            const timeQuantum = parseInt(timeQuantumInput.value);
+
+            // Call the Round Robin function and get the results.
+            const [avgWaitingTime, avgTurnaroundTime] = roundRobin(burstTimes, timeQuantum);
+
+            // Display the results
+            avgWaitingTimeElem.textContent = `Average Waiting Time: ${avgWaitingTime.toFixed(2)}`;
+            avgTurnaroundTimeElem.textContent = `Average Turnaround Time: ${avgTurnaroundTime.toFixed(2)}`;
+            results.style.display = 'block';
+            results.classList.add('animated');
+        });
+
+        document.getElementById('numProcesses').addEventListener('input', (event) => {
+            if (event.target.value > 0) {
+                submitProcesses.disabled = false;
+            } else {
+                submitProcesses.disabled = true;
+            }
+        });
+
+        function goBack() {
+            // Navigate back to the main selection page (index.html)
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

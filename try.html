@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Practical Project</title>
+  
+    <style>
+        *{
+            padding: 0%;
+            margin: 0%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+
+      .top #img{
+    
+        width: 200px;
+        height: 100px;
+        position: fixed;
+        top: 10px;
+        left: -6px;
+
+       
+
+    }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10vh auto;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            
+        }
+        #h1{
+            height: 6vh;
+            width: 100vw;
+            background-color: #3498db;
+            padding-top:2vh;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #algorithmSelect{
+            height: 46px;
+            font-size: 20px;
+        
+        }
+
+        button:hover {
+            background-color: #1b6ca8;
+        }
+       .container:hover{
+
+            animation-delay: 2s;
+            background-color: #5faefd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10vh auto;
+            width: 100%;
+            /* max-width: 400px; */
+            box-shadow: 10 10 20px rgba(6, 3, 3, 0.1);
+       }
+        
+    </style>
+</head>
+
+</html>
+    <div class="top"> 
+   
+    <!-- <h1 id="h1">OS-PRACTICAL PROJECT</h1> -->
+    <img  id="img" src="ITMGOILogo.png" alt="ITM-UNIVERSE">
+</div>
+    <div class="container">
+        <h1>Select a Disk Scheduling Algorithm</h1>
+        <label for="algorithmSelect">Choose an Algorithm:</label>
+        <select id="algorithmSelect">
+            
+            <option value="fcfs">First-Come, First-Served (FCFS)</option>
+            
+            <option value="sstf">Shortest Seek Time First (SSTF)</option>
+        </select>
+        <button id="runButton">Run Algorithm</button>
+    </div>
+    <div class="container">
+        <h1>Select a CPU Scheduling Algorithm</h1>
+        <label for="algorithmSelect">Choose an Algorithm:</label>
+        <select id="algorithmSelect">
+            
+            <option value="fcfs">First-Come, First-Served (FCFS)</option>
+            
+            <option value="sjf">Shortest Job First (SJF)</option>
+            <option value="pjf">Priority Job First (PJF)</option>
+            <option value="rr">Round Robin  ()</option>
+
+        </select>
+        <button id="runButton">Run Algorithm</button>
+    </div>
+
+    <script>
+    //    const top =  document.getElementById("s").value;
+    //    const down = document.getElementById("f").vaalue;
+
+        document.getElementById('runButton').addEventListener('click', () => {
+            const algorithmSelect = document.getElementById('algorithmSelect');
+            const selectedAlgorithm = algorithmSelect.value;
+            
+            if (selectedAlgorithm === 'fcfs') {
+                // Redirect to FCFS program page
+                window.location.href = 'fcfs.html';
+            
+            } else if (selectedAlgorithm === 'sstf') {
+                // Redirect to SSTF program page
+                window.location.href = 'sstf.html';
+            }
+            else if (selectedAlgorithm === 'sjf') {
+                // Redirect to SSTF program page
+                window.location.href = 'sjf.cpp';
+            }
+        });
+    </script>
+</body>
+</html>

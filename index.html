@@ -1,0 +1,146 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>OS-PRACTICAL</title>
+</head>
+<body>
+    <!-- <span class="os">
+        <h1 id="h1">OS-PROJECT</h1>
+    <span> -->
+        <img id src="ITMGOILogo.png" alt="">
+    </div>
+    <img id="nav" src="bar.png" alt="">
+    <div class="navbar">
+     <a id = "a1" >ABOUT</a><br><br>
+     <a id = "a2">THEORY</a>
+    </div>
+    <div class="container1">
+        <h1>Select Your Disk Scheduling Algorithm</h1>
+        <label for="algorithmSelect">Choose an Algorithm:</label>
+
+        <select id="algorithmSelect">
+            
+            <option value="fcfs">First-Come, First-Served (FCFS)</option>
+            
+            <option value="sstf">Shortest Seek Time First (SSTF)</option>
+            <option value="scan">Scan Disk-Scheduling (SCAN)</option>
+            <option value="c-scan">C-Scan Disk-Scheduling (C-SCAN)</option>
+            <option value="look">Look Disk-Scheduling (LOOK)</option>
+            <option value="c-look">C-Look Disk-Scheduling (C-LOOk)</option>
+        </select>
+        <button id="runButton">Run Algorithm</button>
+     </div>
+     <div class="container2">
+        <h1>Select Your CPU Scheduling Algorithm</h1>
+        <label id="label" for="algorithmSelect1">Choose an Algorithm:</label>
+        
+        <select id="algorithmSelect1">
+            
+            <option value="fcfs">First-Come, First-Served (FCFS)</option>
+            
+            <option value="sjf">Shortest Job First (SJF)</option>
+            <option value="pjf">Priority Job First (PJF)</option>
+            <option value="rr">Round Robin  ()</option>
+        </select>
+        <button id="runButton1">Run Algorithm</button>
+    </div>
+</body>
+<script>
+    //    const top =  document.getElementById("s").value;
+    //    const down = document.getElementById("f").vaalue;
+
+    document.querySelector("#a1" ).addEventListener('click', ()=>{
+        window.location.href = 'about.html';
+    });
+    document.querySelector("#a2" ).addEventListener('click', ()=>{
+        window.location.href = 'theory.html';
+    });
+   
+    
+
+        document.getElementById('runButton').addEventListener('click', () => {
+            const algorithmSelect = document.getElementById('algorithmSelect');
+            const selectedAlgorithm = algorithmSelect.value;
+            
+            if (selectedAlgorithm == 'fcfs') {
+                // Redirect to FCFS program page
+                window.location.href = 'fcfs.html';
+            
+            } else if (selectedAlgorithm == 'sstf') {
+                // Redirect to SSTF program page
+                window.location.href = 'sstf.html';
+            }
+            else if (selectedAlgorithm == 'scan') {
+                // Redirect to SSTF program page
+                window.location.href = 'Scan.html';
+            }
+            else if (selectedAlgorithm == 'c-scan') {
+                // Redirect to SSTF program page
+                window.location.href = 'c-scan.html';
+            }
+            else if (selectedAlgorithm == 'look') {
+                // Redirect to SSTF program page
+                window.location.href = 'look.html';
+            }
+            else if (selectedAlgorithm == 'c-look') {
+                // Redirect to SSTF program page
+                window.location.href = 'c-look.html';
+            }
+           
+        });
+
+        document.getElementById('runButton1').addEventListener('click', () => {
+            const algorithmSelect = document.getElementById('algorithmSelect1');
+            const selectedAlgorithm = algorithmSelect.value;
+            
+            if (selectedAlgorithm === 'fcfs') {
+                // Redirect to FCFS program page
+                window.location.href = 'cpufcfs.html';
+            
+            } else if (selectedAlgorithm === 'sjf') {
+             
+                window.location.href = 'cpusjf.html';
+            }
+            else if (selectedAlgorithm === 'pjf') {
+                // Redirect to SSTF program page
+                window.location.href = 'pcpu.html';
+            }
+            else if (selectedAlgorithm === 'rr') {
+                // Redirect to SSTF program page
+                window.location.href = 'round.html';
+            }
+        });
+        var flag=0;
+        var a1 = document.querySelector("#a1");
+        var a2 = document.querySelector("#a2");
+        var nav = document.querySelector("#nav");
+        nav.addEventListener('click', ()=> {
+            
+            if(flag < 1){
+            nav.style.backgroundColor = "aqua";
+            nav.style.color = 'white';
+            nav.style.transform = 'rotate(90deg)';
+            nav.style.opacity = '100%';
+            a1.style.transform = 'scale(1)';
+            a1.style.transition = '0.7s'
+            a2.style.transform = 'scale(1)';
+            a2.style.transition = '0.8s'
+            flag = 1;
+
+            }
+            else{
+                nav.style.backgroundColor = "#90c7f7";
+                nav.style.transform = 'rotate(180deg)';
+                a1.style.transform = 'scale(0)';
+                a2.style.transform = 'scale(0)';
+                nav.style.opacity = '69%';
+                flag = 0;
+            }
+            
+          
+        })
+
+    </script>
+</html>

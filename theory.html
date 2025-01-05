@@ -1,0 +1,189 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        font-family: "Quicksand";
+    }
+    p{
+        font-weight: 2000;
+        font-size: 20px;
+       
+    }
+    h1{
+        text-align: center;
+        text-shadow:7px 2px 7px #0c1014;
+    }
+    h2{
+        text-align: center;
+        text-shadow: 4px 4px 4px rgb(25, 180, 208);
+    }
+    button {
+            background-color: aqua;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            position: fixed;
+            left: 90vw;
+            top: 20px;
+        }
+        button:hover {
+            background-color: #0c1014;
+            color: aqua;
+        }
+</style>
+<body>
+    <button onclick="goBack()">Back</button>
+   <h1>DISK SCHEDULING ALGORITHMS</h1> <br>
+<h2>FCFS (First-Come-First-Serve):</h2><br>
+<p>Description: First-Come-First-Serve (FCFS) is one of the simplest disk scheduling algorithms that operates on the principle of serving disk I/O requests in the order they arrive in the request queue. In this non-preemptive approach, the request that is submitted first is the one to be executed first, creating a straightforward and fair execution sequence.
+How it Works:</p>
+<p>1.Disk requests are placed in a queue based on their arrival time.</p>
+<p>2.	The disk arm starts servicing requests from the front of the queue and proceeds sequentially.</p>
+<p>3.	Once a request is serviced, the disk arm moves to the next request in the queue.</p>
+<p>Advantages:</p>
+<p>•	Simplicity: FCFS is easy to implement and understand.</p>
+<p>•	Fairness: All requests are treated equally in terms of access, ensuring a fair distribution of resources.</p>
+<p>Disadvantages:</p>
+<p>•	Convoy Effect: A long process ahead of a short process can cause the "convoy effect," where short processes are delayed behind longer processes.</p>
+<p>•	Poor Utilization: FCFS may not optimize seek time, leading to increased response time.</p><br>
+SSTF (Shortest Seek Time First):
+<p>Description: Shortest Seek Time First (SSTF) is a disk scheduling algorithm that prioritizes servicing the disk I/O request with the shortest seek time. The seek time is the time taken by the disk arm to reach the desired track. SSTF aims to minimize the total seek time and, consequently, reduce the overall response time for disk operations.</p>
+<p>How it Works:</p>
+<p>1.	Disk requests are prioritized based on their proximity to the current position of the disk arm.</p>
+<p>2.	The request with the shortest seek time is selected for execution first.</p>
+<p>3.	After servicing a request, the disk arm reevaluates the seek time for the remaining requests and chooses the closest one.</p>
+<p>Advantages:</p>
+<p>•	Reduced Seek Time: SSTF minimizes seek time by selecting the closest request, leading to faster response times.</p>
+<p>•	Improved Throughput: The algorithm can enhance overall system throughput by minimizing the time spent seeking.</p>
+<p>Disadvantages:</p>
+<p>•	Starvation: Requests located farther from the current disk arm position may experience starvation as the algorithm prioritizes closer requests.</p>
+<p>•	Unpredictability: SSTF can be more unpredictable in certain scenarios, potentially causing erratic behavior when there are frequent changes in the request pattern.</p>
+<p>Both FCFS and SSTF have their strengths and weaknesses, and the choice between them depends on the specific requirements and characteristics of the system in question.</p> <br>
+
+<h2>SCAN (Elevator):</h2>
+<p>•	Description:</p>
+<p>•	SCAN, also known as the Elevator algorithm, is a disk scheduling algorithm designed to minimize seek time by moving the disk arm in one direction (e.g., from the outermost track to the innermost track) until it reaches the end of the disk. Upon reaching the end, the direction is reversed, and the process repeats. This "elevator" movement reduces seek time and ensures fair access to all tracks on the disk.</p>
+<p>How it Works:</p>	
+<p>1.	The disk arm starts at one end of the disk and moves toward the other end, servicing requests along the way.</p>
+<p>2.	When it reaches the end, it quickly reverses direction and continues servicing requests in the opposite direction.</p>
+<p>3.	This process continues, effectively scanning the entire disk surface.</p>
+<p>•	Advantages:</p>
+<p>•	Fairness: SCAN provides fair access to all tracks on the disk by systematically traversing in both directions.</p>
+<p>•	Minimized Seek Time: The algorithm minimizes seek time by efficiently covering the entire disk surface.</p>
+<p>•	Disadvantages:</p>
+<p>•	Potential Starvation: Requests located at the ends of the disk may experience longer waiting times, potentially leading to starvation.</p>
+<h2>C-SCAN (Circular-SCAN):</h2>
+<p>•	Description:</p>
+<p>•	C-SCAN is an enhancement of the SCAN algorithm, designed to provide more deterministic behavior and address some of the potential issues with SCAN. In C-SCAN, the disk arm moves in a circular fashion, servicing requests only in one.direction. After reaching the last track, the arm quickly returns to the first track, eliminating the back-and-forth movement of SCAN.</p>
+<p>•	How it Works:</p>
+<p>1.	The disk arm starts at one end and moves in a circular manner, servicing requests along the way.</p>
+<p>2.	When it reaches the last track, it quickly returns to the first track without servicing any requests in the reverse direction.</p>
+<p>3.	This circular movement ensures that the disk arm consistently covers the entire disk surface in a predictable manner.</p>
+<p>•	Advantages:</p>
+<p>•	Deterministic Behavior: C-SCAN offers more deterministic behavior compared to SCAN, as it avoids unnecessary back-and-forth movement.</p>
+<p>•	Reduced Variability: The circular movement helps reduce variability in seek times.</p>
+<p>•	Disadvantages:</p>
+<p>•	Potential Starvation: Similar to SCAN, C-SCAN may lead to potential starvation for requests located at the ends of the disk. However, this is mitigated to some extent by the circular movement.</p>
+<p>These disk scheduling algorithms are crucial for optimizing the movement of the disk arm and reducing seek time during disk I/O operations. The choice between SCAN and C-SCAN depends on specific system requirements and characteristics.</p>
+
+<h2>LOOK:</h2>
+<p>•	Description:    </p>                                                                                                                                                                                                                                                                                                                                                                       
+<p>•	LOOK is a disk scheduling algorithm designed to minimize seek time by scanning the disk in only one direction, either inward or outward. Unlike the SCAN algorithm, LOOK does not necessarily go to the end of the disk. Instead, it "looks" for pending requests in the direction it is currently traveling and reverses direction only when no requests are found.</p> 
+<p>•	How it Works:</p> 
+<p>1.	The disk arm starts at the current position and moves in a single direction, servicing requests along the way.</p> 
+<p>2.	When no more requests are found in the current direction, the disk arm reverses direction and continues servicing requests in the opposite direction.</p> 
+<p>3.	This process continues until all pending requests are serviced.</p> 
+<p>•	Advantages:</p> 
+<p>•	Reduced Variability: LOOK reduces variability in seek times compared to SCAN, as it avoids unnecessary traversal to the end of the disk.</p> 
+<p>•	Minimized Seek Time: The algorithm aims to minimize seek time by efficiently servicing requests without unnecessary movement.</p> 
+<p>•	Disadvantages:</p> 
+<p>•	Potential Starvation: LOOK may still lead to potential starvation for requests located at the extremes of the disk.</p> 
+<h2>C-LOOK (Circular-LOOK):</h2>
+<p>•	Description:</p>
+<p>•	C-LOOK is an enhancement of the LOOK algorithm, designed to provide more deterministic behavior and further address potential issues with LOOK. C-LOOK moves the disk arm in a circular fashion, servicing requests only in one direction. After reaching the last track, the arm quickly returns to the first track without servicing any requests in the reverse direction.</p>
+<p>•	How it Works:</p>
+<p>1.	The disk arm starts at the current position and moves in a circular manner, servicing requests along the way.</p>
+<p>2.	When it reaches the last track, it quickly returns to the first track without servicing any requests in the reverse direction.</p>
+<p>3.	This circular movement ensures that the disk arm consistently covers the entire disk surface in a predictable manner.</p>
+<p>•	Advantages:</p>
+<p>•	Deterministic Behavior: C-LOOK offers more deterministic behavior compared to LOOK, as it avoids unnecessary back-and-forth movement.</p>
+<p>•	Reduced Variability: The circular movement helps reduce variability in seek times.</p>
+<p>•	Disadvantages:</p>
+<p>•	Potential Starvation: Similar to LOOK, C-LOOK may lead to potential starvation for requests located at the extremes of the disk.</p>
+<p>These disk scheduling algorithms play a crucial role in optimizing the movement of the disk arm and reducing seek time during disk I/O operations. The choice between LOOK and C-LOOK depends on specific system requirements and characteristics.</p>
+
+<h1>CPU scheduling algorithm</h1>
+
+<h2>FCFS (First-Come-First-Serve):</h2>
+<p>•	Description:</p>
+<p>•	FCFS (First-Come-First-Serve) is a non-preemptive CPU scheduling algorithm that organizes processes in the ready queue based on their arrival time. The process that arrives first is the one that gets executed first, and subsequent processes are executed in the order of their arrival.</p>
+<p>•	How it Works:</p>
+<p>1.	Processes are arranged in the ready queue in the order they arrive.</p>
+<p>2.	The CPU executes the processes in a sequential manner, starting with the process at the front of the queue.</p>
+<p>3.	Once a process completes its execution, the next process in the queue is selected.</p>
+<p>•	Advantages:</p>
+<p>•	Simplicity: FCFS is easy to understand and implement.</p>
+<p>•	Fairness: All processes are treated equally in terms of CPU access.</p>
+<p>•	Disadvantages:</p>
+<p>•	Convoy Effect: The convoy effect can occur, where short processes get delayed behind long processes.</p>
+<p>•	Poor Utilization: FCFS may lead to poor CPU utilization, especially if long processes arrive first.</p>
+<h2>SJF (Shortest Job Next) or SJN (Shortest Job First):</h2>
+<p>•	Description:</p>
+<p>•	SJF (Shortest Job Next) or SJN (Shortest Job First) is a CPU scheduling algorithm that prioritizes processes based on their burst time or execution time. The process with the shortest burst time is selected for execution first, whether preemptively or non-preemptively.</p>
+<p>•	How it Works:</p>
+<p>1.	Processes are initially sorted based on their burst time.</p>
+<p>2.	The process with the shortest burst time is selected for execution.</p>
+<p>3.	If preemptive, the algorithm may switch to a process with a shorter burst time if one arrives during the execution of a process.</p>
+<p>•	Advantages:</p>
+<p>•	Reduced Turnaround Time: SJF minimizes the total turnaround time by executing short processes first.</p>
+<p>•	Disadvantages:</p>
+<p>•	Predicting Burst Time: Predicting accurate burst times in advance can be challenging.</p>
+<p>•	Starvation: Long processes may experience starvation if short processes frequently arrive.</p>
+<p>These CPU scheduling algorithms serve different purposes and are selected based on system requirements and characteristics. FCFS is straightforward but may not optimize for efficiency, while SJF aims to minimize turnaround time by prioritizing short processes.</p>
+
+<h2>Priority Scheduling:</h2>
+<p>•	Description:</p>
+<p>•	Priority Scheduling is a CPU scheduling algorithm that assigns priorities to processes based on criteria such as burst time, deadline, or priority value. The process with the highest priority is selected for execution first. Priority values are typically assigned by the operating system or the user.</p>
+<p>•	How it Works:</p>
+<p>1.	Processes are assigned priorities based on predefined criteria.</p>
+<p>2.	The process with the highest priority is selected for execution.</p>
+<p>•	Advantages:</p>
+<p>•	Customization: Priorities allow customization of scheduling based on specific system requirements.</p>
+<p>•	Optimization for Certain Criteria: Priority Scheduling is flexible and can optimize for criteria such as response time or completion deadlines.</p>
+<p>•	Disadvantages:</p>
+<p>•	Starvation: Low-priority processes may experience starvation if higher-priority processes frequently arrive.</p>
+<p>•	Inversion: Priority inversion, where a high-priority process is delayed by a low-priority process, can occur.</p>
+<h2>Round Robin:</h2>
+<p>•	Description:</p>
+<p>•	Round Robin (RR) is a preemptive CPU scheduling algorithm that allocates a fixed time slice or quantum to each process in the ready queue. Processes are executed in a cyclic order, and if a process's burst time exceeds its quantum, it is moved to the end of the queue to await further execution.</p>
+<p>1.	Each process is assigned a fixed time quantum for execution.</p>
+<p>2.	Processes are executed in a cyclic manner, each receiving CPU time for the duration of the time quantum.</p>
+<p>3.	If a process's burst time is not completed within the time quantum, it is moved to the end of the queue.</p>
+<p>•	Advantages:</p>
+<p>•	Fairness: Round Robin provides fair CPU access to all processes in the ready queue.</p>
+<p>•	Preemption: Preemptive nature allows for effective time-sharing and responsiveness.</p>
+<p>•	Simple Implementation: Round Robin is easy to implement.</p>
+<p>•	Disadvantages:</p>
+<p>•	High Turnaround Time for Long Processes: Long processes may experience higher turnaround time due to frequent preemption.</p>
+<p>These CPU scheduling algorithms serve different purposes and are chosen based on system requirements. Priority Scheduling allows customization based on priorities, while Round Robin ensures fairness and effective time-sharing.</p>
+
+
+<script>
+  
+    function goBack() {
+
+              window.location.href = 'index.html';
+          }
+  </script>
+
+
+</body>
+</html>
