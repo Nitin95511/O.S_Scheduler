@@ -31,4 +31,6 @@ This simulator is built to:
 ## How to Use  
 1. Clone the repository to your local machine.  
    ```bash
-  https://github.com/Nitin95511/O.S_Scheduler.git
+   git clone https://github.com/Nitin95511/O.S_Scheduler.git
+
+ 
